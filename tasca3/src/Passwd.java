@@ -11,17 +11,17 @@ public class Passwd {
             if (contrasenya.length() >= 8) {
                 tieneOcho = true;
             } else {
-                errorPass.put(false, "La contrasenya ha de tenir almenys 8 caràcters");
+                errorPass.put(false, "La contrasenya ha de tenir almenys 8 caràcters\n");
             }
             if (Character.isDigit(caracter)) {
                 numDigit++;
             } else {
-                errorPass.put(false, "La contasenya ha de tenir almenys 2 números");
+                errorPass.put(false, "La contasenya ha de tenir almenys 2 números\n");
             }
             if (Character.isUpperCase(caracter)) {
                 tieneMayus = true;
             } else {
-                errorPass.put(false, "La contrasenya ha de contenir almenys una lletra majúscula");
+                errorPass.put(false, "La contrasenya ha de contenir almenys una lletra majúscula\n");
             }
             if (contrasenya.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
                 tieneEspecial = true;
@@ -30,9 +30,7 @@ public class Passwd {
             }
         }
         if (numDigit >= 2 && tieneMayus && tieneEspecial && tieneOcho) {
-            errorPass.put(true, "Contraseña válida.");
-        } else {
-            errorPass.put(false, "La contraseña es inválida");
+            errorPass.put(true, "");
         }
         return errorPass;
     }
