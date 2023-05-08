@@ -2,50 +2,47 @@ import java.util.HashMap;
 import java.util.Map;
 public class Passwd {
     public Map<Boolean, String> verificarPass(String contrasenya) {
-        char caracter;
-        int numDigit = 0;
         Map<Boolean, String> errorPass = new HashMap<>();
-        boolean tieneMayus = false, tieneEspecial = false, tieneOcho = false;
-        boolean errorOcho = false, errorDigitos = false, errorMayus = false, errorEspecial = false;
+        boolean tieneMayus = false, tieneEspecial = false, tieneOcho = false, tieneDosNumeros = false;
+
+        if (contrasenya.length() < 8) {
+            errorPass.put(false, "La contrasenya ha de tenir almenys 8 caràcters\n");
+        } else {
+            tieneOcho = true;
+        }
+
         for (int i = 0; i < contrasenya.length(); i++) {
-            caracter = contrasenya.charAt(i);
-            if (contrasenya.length() >= 8) {
-                tieneOcho = true;
-            } else {
-                errorOcho = true;
-            }
+            char caracter = contrasenya.charAt(i);
+
             if (Character.isDigit(caracter)) {
-                numDigit++;
-            } else {
-                errorDigitos = true;
+                tieneDosNumeros = tieneDosNumeros || (contrasenya.replaceAll("[^0-9]", "").length() >= 2);
             }
+
             if (Character.isUpperCase(caracter)) {
                 tieneMayus = true;
-            } else {
-                errorMayus = true;
             }
+
             if (contrasenya.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
                 tieneEspecial = true;
-            } else {
-                errorEspecial = true;
             }
         }
-        if (numDigit >= 2 && tieneMayus && tieneEspecial && tieneOcho) {
+
+        if (!tieneDosNumeros) {
+            errorPass.put(false, "La contrasenya ha de tenir almenys 2 números\n");
+        }
+
+        if (!tieneMayus) {
+            errorPass.put(false, "La contrasenya ha de contenir almenys una lletra majúscula\n");
+        }
+
+        if (!tieneEspecial) {
+            errorPass.put(false, "La contrasenya ha de contenir almenys un caràcter especial\n");
+        }
+
+        if (tieneOcho && tieneDosNumeros && tieneMayus && tieneEspecial) {
             errorPass.put(true, "");
-        } else {
-            if (errorOcho) {
-                errorPass.put(false, "La contraseña debe tener al menos 8 caracteres");
-            }
-            if (errorDigitos) {
-                errorPass.put(false, "La contraseña debe tener al menos 2 dígitos");
-            }
-            if (errorMayus) {
-                errorPass.put(false, "La contraseña debe tener al menos una letra mayúscula");
-            }
-            if (errorEspecial) {
-                errorPass.put(false, "La contraseña debe tener al menos un carácter especial");
-            }
         }
+
         return errorPass;
     }
 
